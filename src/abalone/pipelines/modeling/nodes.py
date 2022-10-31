@@ -12,6 +12,12 @@ from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_sc
 from sklearn.tree import plot_tree
 
 def preparation(dataset: pd.DataFrame, label: str) -> Tuple:
+    """Membagi dataset menjadi training set dan test set.
+
+    Keyword arguments:
+    dataset -- Dataset yang akan ditransformasi
+    label -- Nama kolom yang merupakan label dari data
+    """
     # Label pada dataset (Untuk diprediksi pada saat klasifikasi)
     label_df = dataset[label].to_frame()
     # Menghapus label dan menyisakan hanya fitur pada dataset
@@ -31,6 +37,16 @@ def modeling(
     label_test: pd.DataFrame,
     max_depth: int
     ) -> str:
+    """Modeling dengan model decision tree, kemudian melakukan
+    evaluasi dan visualisasi dari decision tree yang dibuat.
+
+    Keyword arguments:
+    data_train  - Dataset berisi data train model
+    data_test   - Dataset berisi data test model
+    label_train - Dataset berisi label train model
+    label_test  - Dataset berisi label test model
+    max_depth   - Angka kedalaman decision tree
+    """
     # Melakukan modeling dengan model decision tree
     model = _training(data_train, label_train, max_depth)
     # Memprediksi data testing
@@ -44,13 +60,14 @@ def modeling(
 
 
 def _training(data_train: pd.DataFrame, label_train: pd.DataFrame, max_depth: int) -> Any:
-    # Melakukan training pada model decision tree
+    """Melakukan training model decision tree."""
     model = DecisionTreeClassifier(max_depth=max_depth)
     model.fit(data_train, label_train)
 
     return model
 
 def _evaluation(label_test: pd.DataFrame, predicted: any) -> str:
+    """Menghitung metrics evaluasi berupa nilai akurasi, presisi, recall, dan F1-Score."""
     akurasi = "Akurasi: " + str(accuracy_score(label_test, predicted)) +"\n"
     presisi = "Presisi:" + str(precision_score(label_test, predicted)) +"\n"
     recall = "Recall: "+ str(recall_score(label_test, predicted)) +"\n"
@@ -59,7 +76,8 @@ def _evaluation(label_test: pd.DataFrame, predicted: any) -> str:
     return akurasi + presisi + recall + f1
 
 def _save_figure(data_train: pd.DataFrame, label_train: pd.DataFrame, model: any) -> None:
-    # Melakukan visualisasi pada decision tree yang sudah dibangun sebelumnya
+    """Melakukan visualisasi pada model decision tree yang sudah dibangun sebelumnya,
+    kemudian menyimpan figure decission tree ke lokal."""
     features = list(data_train.columns)
     labels = [str(label) for label in list(label_train['Class'].unique())]
 
