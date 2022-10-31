@@ -11,7 +11,7 @@ def create_pipeline(**kwargs) -> Pipeline:
     return pipeline([
         node(
             func=preparation,
-            inputs="preprocessed_dataset",
+            inputs=["preprocessed_dataset", "params:label"],
             outputs=["data_train", "data_test", "label_train", "label_test"],
             name="preparation_node"
         ),

@@ -11,16 +11,16 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.tree import plot_tree
 
-def preparation(dataset: pd.DataFrame) -> Tuple:
+def preparation(dataset: pd.DataFrame, label: str) -> Tuple:
     # Label pada dataset (Untuk diprediksi pada saat klasifikasi)
-    label = dataset['Class'].to_frame()
+    label_df = dataset[label].to_frame()
     # Menghapus label dan menyisakan hanya fitur pada dataset
-    data = dataset.drop(columns=['Class'], axis=1)
+    data = dataset.drop(columns=[label], axis=1)
     
     # Membagi dataset menjadi training set dan test set
     # dengan jumlah training set adalah sebanyak 80% dari data keseluruhan 
     data_train, data_test, label_train, label_test = train_test_split(
-        data, label, train_size=0.8, random_state=42)
+        data, label_df, train_size=0.8, random_state=42)
 
     return data_train, data_test, label_train, label_test
 
